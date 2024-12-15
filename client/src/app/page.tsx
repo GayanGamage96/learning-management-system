@@ -1,3 +1,11 @@
+import NonDashboardNavbar from '@/components/NonDashboardNavbar';
+import LandingPage from "@/app/(nondashboard)/landing/page";
+
 export default function Home() {
-  return <div>Hello,Welocme to the learning management system</div>;
+  return <div className="nondashboard-layout">
+    <NonDashboardNavbar/>
+    <main className='nondashboard-layout__main'>
+<LandingPage/>
+    </main>
+  </div>;
 }
