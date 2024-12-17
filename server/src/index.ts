@@ -5,8 +5,10 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
 import * as dynamoose from "dynamoose";
+import { AppConfig } from "aws-sdk";
 
 // ROUTE IMPORTS
+import courseRoutes from './routes/courseRoutes';
 
 // CONFIGURATIONS
 dotenv.config();
@@ -24,9 +26,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
 
+// ROUTES
 app.get("/",(req,res)=>{
     res.send("Hello World")
 });
+
+app.use("/courses", courseRoutes)
 
 const port = process.env.PORT || 3000;
 if(!isProduction){
