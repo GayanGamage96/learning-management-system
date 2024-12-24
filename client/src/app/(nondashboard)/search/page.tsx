@@ -35,7 +35,7 @@ const Search = () => {
   }
 
   const handleEnrollNow =(courseId:string)=>{
-router.push(`/checkout?step=1&id=${courseId}&showSignup=false`)
+router.push(`/checkout?step=1&id=${courseId}&showSignUp=false`)
   }
   return (
     <motion.div
