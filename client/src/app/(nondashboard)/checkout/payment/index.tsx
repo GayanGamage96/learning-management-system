@@ -5,22 +5,55 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { useCreateStripePaymentIntentMutation } from "@/state/api";
+import { useCreateStripePaymentIntentMutation, useCreateTransactionMutation } from "@/state/api";
 import { useCheckoutNavigation } from "@/hooks/useCheckoutNavigation";
 import { useCurrentCourse } from "@/hooks/useCurrentCourse";
 import { useClerk, useUser } from "@clerk/nextjs";
 import CoursePreview from "@/components/CoursePreview";
 import { CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const PaymentPageContent = () => {
   const stripe = useStripe();
   const elements = useElements();
-  //const {createTransaction} =useCreateTransactionMutation();
+  const [createTransaction] =useCreateTransactionMutation();
   const { navigateToStep } = useCheckoutNavigation();
   const { course, courseId } = useCurrentCourse();
   const { user } = useUser();
   const { signOut } = useClerk();
+
+  const handleSubmit = async(e:React.FormEvent)=>{
+    e.preventDefault();
+    if(!stripe||!elements){
+      toast.error("Stripe service is not available");
+      return;
+    }
+    const result = await stripe.confirmPayment({
+      elements,
+      confirmParams:{
+        return_url:`${process.env.NEXT_PUBLIC_STRIPE_REDIRECT_URL}?id=${courseId}`
+      },
+      redirect:"if_required"
+    });
+    if(result.paymentIntent?.status==="succeeded"){
+      const transactionData:Partial<Transaction>={
+        transactionId:result.paymentIntent.id,
+        userId:user?.id,
+        courseId:courseId,
+        paymentProvider:'stripe',
+        amount:course?.price
+      }
+      await createTransaction(transactionData),
+      navigateToStep(3);
+    }
+  };
+
+  const handleSignOutAndNavigate=async()=>{
+    await signOut();
+    navigateToStep(1);
+  }
+
 
   if (!course) return null;
 
@@ -36,8 +69,7 @@ const PaymentPageContent = () => {
           <form
             id="payment-form"
             className="payment__form"
-            //onSubmit={handleSubmi
-            // t}
+            onSubmit={handleSubmit}
           >
             <div className="payment__content">
               <h1 className="payment-title">Checkout </h1>
@@ -64,7 +96,7 @@ const PaymentPageContent = () => {
       <div className="payment__actions">
         <Button
           className="hover:bg-white-50/10 hover:text-white bg-customgreys-primarybg"
-          //onClick={handleSignOutandNavigate}
+          onClick={handleSignOutAndNavigate}
           variant="outline"
           type="button"
         >
