@@ -1163,7 +1163,7 @@ input[type="color"] {
 }
 
 .toolbar__select-item {
-  @apply cursor-pointer hover:!bg-gray-100 hover:!text-customgreys-darkGrey;
+  @apply cursor-pointer text-white-100 hover:!bg-gray-100 hover:!text-customgreys-darkGrey;
 }
 
 /* Wizard Stepper */

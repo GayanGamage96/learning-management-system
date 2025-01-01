@@ -10,7 +10,7 @@ import {
   deleteChapter,
   openSectionModal,
   openChapterModal,
-} from "../state";
+} from "@/state";
 
 export default function DroppableComponent() {
   const dispatch = useAppDispatch();
@@ -250,3 +250,4 @@ const ChapterItem = ({
     </div>
   );
 };
+
