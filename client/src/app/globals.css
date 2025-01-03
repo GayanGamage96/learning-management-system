@@ -711,11 +711,11 @@ input[type="color"] {
 }
 
 .course__instructor-title {
-  @apply text-sm;
+  @apply text-sm text-white-100;
 }
 
 .course__instructor-bio {
-  @apply text-sm;
+  @apply text-sm text-white-100;
 }
 
 /* Chapters Sidebar */

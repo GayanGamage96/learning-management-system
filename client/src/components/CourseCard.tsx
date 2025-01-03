@@ -22,8 +22,8 @@ const CourseCard = ({ course, onGoToCourse }: CourseCardProps) => {
           priority
         />
       </CardHeader>
-      <CardContent className="course-card__content">
-        <CardTitle className="course-card__title">
+      <CardContent className="course-card__content text-white-50">
+        <CardTitle className="course-card__title text-white-50">
           {course.title}: {course.description}
         </CardTitle>
 
